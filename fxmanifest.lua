@@ -4,10 +4,14 @@ game 'gta5'
 
 description 'ESX Identity'
 
-version '1.2.0'
+version '0.1a'
+
+author "create by alien city devloper"
 
 server_scripts {
 	'@es_extended/locale.lua',
+	--'@oxmysql/lib/MySQL.lua', --if you use oxmysql
+	--'@mongodb/lib/MongoDB.lua', -- if you use mongodb
 	'@mysql-async/lib/MySQL.lua',
 	'locales/en.lua',
 	'locales/cs.lua',
