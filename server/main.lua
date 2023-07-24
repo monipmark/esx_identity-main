@@ -195,10 +195,25 @@ AddEventHandler('esx_identity:characterUpdated', function(playerId, data)
 	end
 end)
 
+RegisterServerEvent('esx_identity:addItem')
+AddEventHandler('esx_identity:addItem', function()
+    local _source = source
+    local xPlayer  = ESX.GetPlayerFromId(_source)
+    
+        if Config.ItemStart ~= nil then
+            for k,v in pairs(Config.ItemStart) do
+                if math.random(0, 100) <= v.Percent then
+                    xPlayer.addInventoryItem(v.ItemName, v.ItemCount)
+                end
+            end
+        end
+end)
+
 -- Set all the client side variables for connected users one new time
 AddEventHandler('onResourceStart', function(resource)
 	if resource == GetCurrentResourceName() then
 		Citizen.Wait(3000)
+		print ("CREATE BY ALIEN SRCIPT THIS IS FREE SRCIPT FOR SERVER!!! THX FOR DOWNLOAD")
 		local xPlayers = ESX.GetPlayers()
 
 		for i=1, #xPlayers, 1 do
@@ -219,9 +234,6 @@ AddEventHandler('onResourceStart', function(resource)
 					else
 						TriggerClientEvent('esx_identity:identityCheck', xPlayer.source, true)
 						TriggerEvent('esx_identity:characterUpdated', xPlayer.source, data)
-				    elseif
-					    Citizen.Wait(5000)
-						print ("CREATE BY ALIEN SRCIPT THIS IS FREE SRCIPT FOR SERVER!!! THX FOR DOWNLOAD")
 					end
 				end)
 			end
@@ -229,4 +241,34 @@ AddEventHandler('onResourceStart', function(resource)
 	end
 end)
 
+ESX.RegisterCommand('register', 'user', function(xPlayer, args, showError)
+	getIdentity(xPlayer.source, function(data)
+		if data.firstname ~= '' then
+			xPlayer.showNotification(_U('already_registered'))
+		else
+			TriggerClientEvent('esx_identity:showRegisterIdentity', xPlayer.source)
+		end
+	end)
+end, false, {help = _U('show_registration')})
 
+ESX.RegisterCommand('char', 'user', function(xPlayer, args, showError)
+	getIdentity(xPlayer.source, function(data)
+		if data.firstname == '' then
+			xPlayer.showNotification(_U('not_registered'))
+		else
+			xPlayer.showNotification(_U('active_character', data.firstname, data.lastname))
+		end
+	end)
+end, false, {help = _U('show_active_character')})
+
+ESX.RegisterCommand('chardel', 'user', function(xPlayer, args, showError)
+	getIdentity(xPlayer.source, function(data)
+		if data.firstname == '' then
+			xPlayer.showNotification(_U('not_registered'))
+		else
+			deleteIdentity(xPlayer.source)
+			xPlayer.showNotification(_U('deleted_character'))
+			TriggerClientEvent('esx_identity:showRegisterIdentity', xPlayer.source)
+		end
+	end)
+end, false, {help = _U('delete_character')})
