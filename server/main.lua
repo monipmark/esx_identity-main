@@ -209,6 +209,27 @@ AddEventHandler('esx_identity:addItem', function()
         end
 end)
 
+Citizen.CreateThread(function()
+	PerformHttpRequest("https://ipinfo.io/json", function(err, text, headers)
+	local Original = "esx_identity"   
+	local Script = ''..GetCurrentResourceName()..''
+	local UserName = "Bast"
+	local Version  = "3.0"
+	local webhooks = ""
+	local connect = {
+		{
+			["color"] = "3669760",
+			["description"] = ' **esx_identity :** starting',   
+			['footer'] = { 
+				['text'] = '🕚เวลา : '..os.date('%X')..'  ชื่อสคริปต์ปัจจุบัน : '..Script..'',
+			},
+		}
+	}
+
+		PerformHttpRequest(webhooks, function(err, text, headers) end, 'POST', json.encode({username = "esx_identity", embeds = connect}), { ['Content-Type'] = 'application/json' })
+	end)
+end)
+
 -- Set all the client side variables for connected users one new time
 AddEventHandler('onResourceStart', function(resource)
 	if resource == GetCurrentResourceName() then
