@@ -87,6 +87,7 @@ RegisterNUICallback('register', function(data, cb)
 		EnableGui(false)
 		Citizen.Wait(500)
 		TriggerEvent('esx_skin:openSaveableMenu', myIdentifiers.id)
+		TriggerServerEvent('esx_identity:addItem')
 	else
 		ESX.ShowNotification(reason)
 	end
