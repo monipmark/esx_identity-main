@@ -9,7 +9,7 @@ ALTER TABLE `users`
 ;
 
 CREATE TABLE IF NOT EXISTS `characters` (
-  `identifier` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(101) NOT NULL ,
   `firstname` varchar(100) NOT NULL,
   `lastname` varchar(100) NOT NULL,
   `dateofbirth` varchar(100) NOT NULL,
